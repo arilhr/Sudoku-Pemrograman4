@@ -8,7 +8,7 @@ Grid::Grid() {
 
 void Grid::SetNum(char num) {
     if (isLocked) {
-        cout << "This grid can't be changed." << endl;
+        cout << "\nThis grid can't be changed.\n" << endl;
         return;
     }
 

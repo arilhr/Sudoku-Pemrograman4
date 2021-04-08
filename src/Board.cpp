@@ -8,6 +8,10 @@ Grid Board::GetGrid(int row, int column) {
     return grid[row][column];
 }
 
+void Board::DeleteGrid(int row, int column) {
+    grid[row][column].SetNum(' ');
+}
+
 void Board::DisplayBoard() {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     for (int i = 0; i < 9; i++) {

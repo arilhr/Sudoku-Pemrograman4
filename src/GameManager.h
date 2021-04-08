@@ -3,12 +3,14 @@
 #include <stdlib.h>
 #include "Board.h"
 #include "Player.h"
+#include "Invoker.h"
 using namespace std;
 
 class GameManager {
     private:
         Board board;
         Player player;
+        Invoker *invoker;
         vector<vector<char>> undoData;
         vector<vector<char>> redoData;
     public:

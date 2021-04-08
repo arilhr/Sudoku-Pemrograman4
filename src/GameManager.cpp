@@ -5,6 +5,8 @@ GameManager::GameManager () {
     cout << "Enter player name: ";
     cin >> tempName;
     player.SetName(tempName);
+
+    invoker = new Invoker(board);
 }
 
 void GameManager::PlayGame () {
@@ -37,6 +39,8 @@ void GameManager::PlayGame () {
             GameWin();
             break;
         }
+        
+        // system("cls");
     }
 }
 
@@ -52,43 +56,46 @@ void GameManager::InputPlayer() {
     cin >> column;
 
     SaveHistoryData(undoData);
-    board.SetGrid(number, row-1, column-1);
+    invoker->PushCommand(row - 1, column - 1, number);
+    
 }
 
 void GameManager::UndoGame() {
-    vector<char> temp;
-    temp = undoData.back();
-    SaveHistoryData(redoData);
+    // vector<char> temp;
+    // temp = undoData.back();
+    // SaveHistoryData(redoData);
 
-    int n = 0;
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-            if (!board.GetGrid(i, j).GetLockCond()) {
-                board.SetGrid(temp[n], i, j);
-            }
-            n++;
-        }
-    }
+    // int n = 0;
+    // for (int i = 0; i < 9; i++) {
+    //     for (int j = 0; j < 9; j++) {
+    //         if (!board.GetGrid(i, j).GetLockCond()) {
+    //             board.SetGrid(temp[n], i, j);
+    //         }
+    //         n++;
+    //     }
+    // }
 
-    undoData.pop_back();
+    // undoData.pop_back();
+
+    invoker->PopCommand();
 }
 
 void GameManager::RedoGame() {
-    vector<char> temp;
-    temp = redoData.back();
-    SaveHistoryData(undoData);
+    // vector<char> temp;
+    // temp = redoData.back();
+    // SaveHistoryData(undoData);
 
-    int n = 0;
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-            if (!board.GetGrid(i, j).GetLockCond()) {
-                board.SetGrid(temp[n], i, j);
-            }
-            n++;
-        }
-    }
+    // int n = 0;
+    // for (int i = 0; i < 9; i++) {
+    //     for (int j = 0; j < 9; j++) {
+    //         if (!board.GetGrid(i, j).GetLockCond()) {
+    //             board.SetGrid(temp[n], i, j);
+    //         }
+    //         n++;
+    //     }
+    // }
 
-    redoData.pop_back();
+    // redoData.pop_back();
 }
 
 void GameManager::SaveHistoryData(vector<vector<char>> &v) {

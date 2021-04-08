@@ -15,6 +15,7 @@ class Board {
     public:
         void SetGrid(char number, int row, int column);
         Grid GetGrid(int row, int column);
+        void DeleteGrid(int row, int column);
         void LoadLevelData();
         void DisplayBoard();
         bool CheckHorizontalGrid();
