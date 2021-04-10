@@ -1,21 +1,16 @@
 #include "Invoker.h"
 
-Invoker::Invoker(Board &board) {
-    this->board = &board;
+Command* Invoker::GetCommand() {
+    return commands.back();
 }
 
-void Invoker::PushCommand(int row, int column, char value) {
-    Command command(*board, row, column, value);
-    command.Execute();
-    commands.push_back(command);
-    cout << "Count: " << commands.size() << endl;
+void Invoker::PushCommand(Command &command) {
+    commands.push_back(&command);
 }
 
 void Invoker::PopCommand() {
     if (commands.empty())
         return;
-    
-    commands.back().Undo();
+
     commands.pop_back();
-    cout << "UNDO COMPLETED"<< endl;
 }

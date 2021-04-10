@@ -2,6 +2,10 @@
 
 Player::Player() {
     score = 0;
+    string temp;
+    cout << "Enter player name: ";
+    cin >> temp;
+    name = temp;
 }
 
 void Player::SetName(string name) {

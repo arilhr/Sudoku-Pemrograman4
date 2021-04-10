@@ -1,15 +1,13 @@
 #pragma once
 #include <vector>
 #include "Command.h"
-#include "Board.h"
 
 class Invoker {
     private:
-        Board *board;
-        std::vector<Command> commands;
+        std::vector<Command*> commands;
     public:
         Invoker() = default;
-        Invoker(Board &board);
-        void PushCommand(int row, int column, char value);
+        Command* GetCommand();
+        void PushCommand(Command &command);
         void PopCommand();
 };

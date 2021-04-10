@@ -1,20 +1,17 @@
 #include "GameManager.h"
 
 GameManager::GameManager () {
-    string tempName;
-    cout << "Enter player name: ";
-    cin >> tempName;
-    player.SetName(tempName);
-
-    invoker = new Invoker(board);
+    player = new Player();
+    board = new Board();
+    invoker = new Invoker();
 }
 
 void GameManager::PlayGame () {
-    board.LoadLevelData();
+    board->LoadLevelData();
     while (true) {
         cout << "///// SUDOKU GAME /////" << endl;
-        cout << "NAME: " << player.GetName() << endl;
-        cout << "SCORE: " << player.GetScore() << endl;
+        cout << "NAME: " << player->GetName() << endl;
+        cout << "SCORE: " << player->GetScore() << endl;
 
         int playerInput;
         DisplayBoard();
@@ -26,10 +23,10 @@ void GameManager::PlayGame () {
                 InputPlayer();
                 break;
             case 2:
-                UndoGame();
+                Undo();
                 break;
             case 3:
-                RedoGame();
+                Redo();
                 break;
             default:
                 break;
@@ -39,81 +36,40 @@ void GameManager::PlayGame () {
             GameWin();
             break;
         }
-        
-        // system("cls");
     }
 }
 
 void GameManager::InputPlayer() {
-    char number;
+    char value;
     int row, column;
 
     cout << "Number: ";
-    cin >> number;
+    cin >> value;
     cout << "Row: ";
     cin >> row;
     cout << "Column: ";
     cin >> column;
-
-    SaveHistoryData(undoData);
-    invoker->PushCommand(row - 1, column - 1, number);
     
+    FillBoard *command = new FillBoard(*board, value, row, column);
+    command->Execute();
+    invoker->PushCommand(*command);
 }
 
-void GameManager::UndoGame() {
-    // vector<char> temp;
-    // temp = undoData.back();
-    // SaveHistoryData(redoData);
-
-    // int n = 0;
-    // for (int i = 0; i < 9; i++) {
-    //     for (int j = 0; j < 9; j++) {
-    //         if (!board.GetGrid(i, j).GetLockCond()) {
-    //             board.SetGrid(temp[n], i, j);
-    //         }
-    //         n++;
-    //     }
-    // }
-
-    // undoData.pop_back();
-
-    invoker->PopCommand();
-}
-
-void GameManager::RedoGame() {
-    // vector<char> temp;
-    // temp = redoData.back();
-    // SaveHistoryData(undoData);
-
-    // int n = 0;
-    // for (int i = 0; i < 9; i++) {
-    //     for (int j = 0; j < 9; j++) {
-    //         if (!board.GetGrid(i, j).GetLockCond()) {
-    //             board.SetGrid(temp[n], i, j);
-    //         }
-    //         n++;
-    //     }
-    // }
-
-    // redoData.pop_back();
-}
-
-void GameManager::SaveHistoryData(vector<vector<char>> &v) {
-    vector<char> tempSave;
-    tempSave.clear();
-
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-            tempSave.push_back(board.GetGrid(i, j).GetNum());
-        }
+void GameManager::Undo() {
+    if (invoker->GetCommand() != NULL) {
+        Command *topCommand = invoker->GetCommand();
+        topCommand->Undo();
+        invoker->PopCommand();
     }
+}
 
-    v.push_back(tempSave);
+void GameManager::Redo() {
+    
 }
 
 void GameManager::GameWin() {
     cout << "\n\n///// WIN /////" << endl;
-    player.AddScore();
+    player->AddScore();
     DisplayBoard();
 
     int userInput;
@@ -127,13 +83,13 @@ void GameManager::GameWin() {
 }
 
 bool GameManager::CheckWin() {
-    if (!board.CheckHorizontalGrid()) {
+    if (!board->CheckHorizontalGrid()) {
         return false;
     }
-    if (!board.CheckVerticalGrid()) {
+    if (!board->CheckVerticalGrid()) {
         return false;
     }
-    if (!board.CheckBlockGrid()) {
+    if (!board->CheckBlockGrid()) {
         return false;
     }
 
@@ -141,5 +97,5 @@ bool GameManager::CheckWin() {
 }
 
 void GameManager::DisplayBoard() {
-    board.DisplayBoard();
+    board->DisplayBoard();
 }

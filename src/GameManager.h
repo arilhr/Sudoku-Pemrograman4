@@ -4,15 +4,14 @@
 #include "Board.h"
 #include "Player.h"
 #include "Invoker.h"
+#include "FillBoard.h"
 using namespace std;
 
 class GameManager {
     private:
-        Board board;
-        Player player;
+        Board *board;
+        Player *player;
         Invoker *invoker;
-        vector<vector<char>> undoData;
-        vector<vector<char>> redoData;
     public:
         GameManager();
         void PlayGame();
@@ -20,7 +19,6 @@ class GameManager {
         void InputPlayer();
         bool CheckWin();
         void GameWin();
-        void UndoGame();
-        void RedoGame();
-        void SaveHistoryData(vector<vector<char>> &v);
+        void Undo();
+        void Redo();
 };
