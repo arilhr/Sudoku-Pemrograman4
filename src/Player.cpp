@@ -1,7 +1,13 @@
+/*4210191002 Irfan Muhammad*/
+
 #include "Player.h"
 
-Player::Player() {
+Player::Player(){
     score = 0;
+    InputName();
+}
+
+void Player::InputName() {
     string temp;
     cout << "Enter player name: ";
     cin >> temp;

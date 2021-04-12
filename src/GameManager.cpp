@@ -1,3 +1,4 @@
+/* 4210191014 AURIEL HARLIH */
 #include "GameManager.h"
 
 GameManager::GameManager () {
@@ -7,14 +8,17 @@ GameManager::GameManager () {
 }
 
 void GameManager::PlayGame () {
+    // load data awal board
     board->LoadLevelData();
+
+    // mulai permainan
     while (true) {
         cout << "///// SUDOKU GAME /////" << endl;
         cout << "NAME: " << player->GetName() << endl;
         cout << "SCORE: " << player->GetScore() << endl;
+        DisplayBoard();
 
         int playerInput;
-        DisplayBoard();
         cout << "1. Input Grid | 2. Undo | 3. Redo" << endl;
         cin >> playerInput;
         switch (playerInput)
@@ -32,6 +36,7 @@ void GameManager::PlayGame () {
                 break;
         }
         
+        // cek win
         if (CheckWin()) {
             GameWin();
             break;
@@ -40,6 +45,7 @@ void GameManager::PlayGame () {
 }
 
 void GameManager::InputPlayer() {
+    // method untuk pemain menginput value pada grid
     char value;
     int row, column;
 
@@ -50,13 +56,16 @@ void GameManager::InputPlayer() {
     cout << "Column: ";
     cin >> column;
     
+    // Declare dan inisialisasi command -> execute -> push
     FillBoard *command = new FillBoard(*board, value, row, column);
     command->Execute();
     invoker->PushCommand(*command);
 }
 
 void GameManager::Undo() {
+    // cek apakah stack command kosong atau tidak
     if (invoker->GetCommand() != NULL) {
+        // get command teratas -> undo -> pop
         Command *topCommand = invoker->GetCommand();
         topCommand->Undo();
         invoker->PopCommand();
@@ -64,14 +73,18 @@ void GameManager::Undo() {
 }
 
 void GameManager::Redo() {
-    
+    // dalam tahap pengembangan hehe, masih belum paham gan
+
 }
 
 void GameManager::GameWin() {
+    // tambah score pemain
     cout << "\n\n///// WIN /////" << endl;
     player->AddScore();
+
     DisplayBoard();
 
+    // player input ingin main lagi atau keluar
     int userInput;
     cout << "1 : start again | 2 : to exit" << endl;
     cin >> userInput;
@@ -83,6 +96,7 @@ void GameManager::GameWin() {
 }
 
 bool GameManager::CheckWin() {
+    // cek horizontal grid -> vertical grid -> per block
     if (!board->CheckHorizontalGrid()) {
         return false;
     }

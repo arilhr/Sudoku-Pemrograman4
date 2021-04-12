@@ -1,3 +1,5 @@
+/* 4210191014 AURIEL HARLIH RIZKINANDA */
+
 #include "Board.h"
 
 void Board::SetGrid(char number, int row, int column) {

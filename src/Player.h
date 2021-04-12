@@ -11,6 +11,7 @@ class Player {
         Player();
         void SetName(string name);
         string GetName();
+        void InputName();
         void SetScore(int score);
         int GetScore();
         void AddScore();
