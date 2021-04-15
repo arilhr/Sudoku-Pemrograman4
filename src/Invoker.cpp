@@ -5,6 +5,10 @@ Command* Invoker::GetCommand() {
     return commands.back();
 }
 
+bool Invoker::IsEmpty() {
+    return commands.empty();
+}
+
 void Invoker::PushCommand(Command &command) {
     // push command
     commands.push_back(&command);
@@ -17,4 +21,8 @@ void Invoker::PopCommand() {
 
     // pop command
     commands.pop_back();
+}
+
+void Invoker::Clear() {
+    commands.clear();
 }

@@ -11,4 +11,6 @@ class Invoker {
         Command* GetCommand();
         void PushCommand(Command &command);
         void PopCommand();
+        bool IsEmpty();
+        void Clear();
 };

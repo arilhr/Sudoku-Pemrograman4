@@ -4,7 +4,8 @@
 GameManager::GameManager () {
     player = new Player();
     board = new Board();
-    invoker = new Invoker();
+    undoInvoker = new Invoker();
+    redoInvoker = new Invoker();
 }
 
 void GameManager::PlayGame () {
@@ -56,25 +57,33 @@ void GameManager::InputPlayer() {
     cout << "Column: ";
     cin >> column;
     
-    // Declare dan inisialisasi command -> execute -> push
+    // Declare dan inisialisasi command -> execute -> push ke undo stack -> clear redo stack 
     FillBoard *command = new FillBoard(*board, value, row, column);
     command->Execute();
-    invoker->PushCommand(*command);
+    undoInvoker->PushCommand(*command);
+    redoInvoker->Clear();
 }
 
 void GameManager::Undo() {
     // cek apakah stack command kosong atau tidak
-    if (invoker->GetCommand() != NULL) {
-        // get command teratas -> undo -> pop
-        Command *topCommand = invoker->GetCommand();
-        topCommand->Undo();
-        invoker->PopCommand();
+    if (!undoInvoker->IsEmpty()) {
+        // get command teratas -> undo -> push command ke redo stack -> pop dari undo stack
+        Command *command = undoInvoker->GetCommand();
+        command->Undo();
+        redoInvoker->PushCommand(*command);
+        undoInvoker->PopCommand();
     }
 }
 
 void GameManager::Redo() {
-    // dalam tahap pengembangan hehe, masih belum paham gan
-
+    // cek stack commands di redo kosong atau tidak
+    if (!redoInvoker->IsEmpty()) {
+        // get command redo teratas -> execute -> push command ke undo stack -> pop dari redo stack
+        Command *command = redoInvoker->GetCommand();
+        command->Execute();
+        undoInvoker->PushCommand(*command);
+        redoInvoker->PopCommand();
+    }
 }
 
 void GameManager::GameWin() {

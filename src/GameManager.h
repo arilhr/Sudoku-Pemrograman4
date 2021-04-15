@@ -12,7 +12,8 @@ class GameManager {
     private:
         Board *board;
         Player *player;
-        Invoker *invoker;
+        Invoker *undoInvoker;
+        Invoker *redoInvoker;
     public:
         GameManager();
         void PlayGame();
